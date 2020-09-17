@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>山东大学校园助手</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="css/fontastic.css">
+    <!-- Google fonts - Poppins -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="css/custom.css">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="img/favicon.ico">
+    <!-- Tweaks for older IEs-->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+</head>
+
+<body>
+<script src="js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript">
+     $(document).ready(function() {
+         document.getElementById("userimage").src = sessionStorage.getItem("userimage");
+         document.getElementById("username").innerHTML = sessionStorage.getItem("username");
+         document.getElementById("classname").innerHTML = sessionStorage.getItem("userclass");
+		 getStudentgrade();
+     });
+     function retake(cid) {
+
+         document.getElementById(cid).innerHTML='已重修';
+         var str={
+             "id":sessionStorage.getItem("userid"),
+             "course_id":cid,
+         }
+         $.ajax({
+             type:'POST',
+             url:'http://49.235.169.238:8000/api/retakecourse/',
+             dataType: 'JSON',
+             contentType: "application/json",
+             data: JSON.stringify(str),
+             success:function (data) {
+
+                if(data.code==200){
+                 alert("重修成功！");
+                 selectedCourse();
+                }
+                else{
+                    alert("选课失败！");
+                }
+
+             }
+         });
+     }
+     function getStudentgrade() {
+
+         $.ajax({
+             url: 'http://49.235.169.238:8000/api/getcoursegrade/'+sessionStorage.getItem("userid"),
+             type: 'GET',
+             dataType: 'JSON',
+
+             success: function(data) {
+                $('#coursegrade').empty();
+                 for(var i=0;i<data.num;i++) {
+                     var str="";
+                     str+=' <tr id="slot1">' +
+                         '<th scope="row">' + data.result[i].course_id + '</th>' +
+                         '<td >' + data.result[i].classname + '</td>' +
+                         '<td >' + data.result[i].teacher + '</td>' ;
+                     if(data.result[i].score==null){
+                          str+='<td >' + '成绩未出' + '</td>' +
+                         '<td >' + '--' + '</td>' +
+                         '<td id=' +data.result[i].course_id+ '>';
+                     }
+                     else{
+                         str+='<td >' + data.result[i].score + '</td>' +
+                         '<td >' + data.result[i].rank + '</td>' +
+                         '<td id=' +data.result[i].course_id+ '>';
+                     }
+
+                     if(data.result[i].score<60&&data.result[i].retake==0){
+
+                         str+='<button type="button" class="btn btn-danger"   onclick="retake(\'' +
+                            data.result[i].course_id+
+                            '\');return false;">重修</button>';
+                     }
+                     if(data.result[i].score<60&&data.result[i].retake>0){
+
+                         str+='已重修';
+                     }
+                    str+='</td>'+'</tr>';
+                $('#coursegrade').append(str);
+                 }
+
+              },
+             error: function() { }
+         });
+     }
+	 function doPrint(){
+			var userAgent = navigator.userAgent.toLowerCase(); //取得浏览器的userAgent字符串
+			if (userAgent.indexOf("trident") > -1){
+				alert("请使用google或者360浏览器打印");
+				return false;
+			}else if(userAgent.indexOf('msie')>-1){
+				var onlyChoseAlert = simpleAlert({
+				   "content":"请使用Google或者360浏览器打印",
+				   "buttons":{
+					   "确定":function () {
+						   onlyChoseAlert.close();
+					   }
+				   }
+			   })
+				alert("请使用google或者360浏览器打印");
+				return false;
+			}else{//其它浏览器使用lodop
+				var oldstr = document.body.innerHTML;
+				var headstr = "<html><head><title></title></head><body>";
+				var footstr = "</body>";
+				var printData = document.getElementById("main").innerHTML; //获得 div 里的所有 html 数据
+				document.body.innerHTML = headstr+printData+footstr;
+				window.print();
+				document.body.innerHTML = oldstr ;
+			}
+	}
+    </script>
+    <div class="page">
+        <!-- Main Navbar-->
+        <header class="header">
+            <nav class="navbar">
+                <div class="container-fluid">
+                    <div class="navbar-holder d-flex align-items-center justify-content-between">
+                        <!-- Navbar Header-->
+                        <div class="navbar-header">
+                            <!-- Navbar Brand -->
+                            <a href="index.html" class="navbar-brand d-none d-sm-inline-block">
+                                <div class="brand-text d-none d-lg-inline-block"><span>山东大学</span><strong>计算机科学与技术学院</strong></div>
+                                <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>山大计科</strong></div>
+                            </a>
+                            <!-- Toggle Button--><a id="toggle-btn" href="#" class="menu-btn active"><span></span><span></span><span></span></a>
+                        </div>
+                        <!-- Navbar Menu -->
+                        <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+                            <!-- Logout    -->
+                            <li class="nav-item">
+                                <a href="login.html" class="nav-link logout"> <span class="d-none d-sm-inline">Logout</span><i class="fa fa-sign-out"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <div class="page-content d-flex align-items-stretch">
+            <!-- Side Navbar -->
+            <nav class="side-navbar">
+                <!-- Sidebar Header-->
+                <div class="sidebar-header d-flex align-items-center">
+                    <div class="avatar"><img id = "userimage" alt="..." class="img-fluid rounded-circle"></div>
+                    <div class="title">
+                        <h1 class="h4" id ="username"></h1>
+                        <p id ="classname"></p>
+                    </div>
+                </div>
+                <!-- Sidebar Navidation Menus--><span class="heading"></span>
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="index.html"> <i class="icon-home"></i>主页面 </a>
+                    </li>
+                    <li>
+                        <a href="tables.html"> <i class="icon-grid"></i>选课 </a>
+                    </li>
+                    <li>
+                        <a href="Discuss.html"> <i class="fa fa-bar-chart"></i>讨论区 </a>
+                    </li>
+                    <li>
+                        <a href="forms.html"> <i class="icon-padnote"></i>发布页面 </a>
+                    </li>
+                    <li>
+                        <a href="#exampledropdownDropdown" aria-expanded="true" data-toggle="collapse"> <i class="icon-interface-windows"></i>功能 </a>
+                        <ul id="exampledropdownDropdown" >
+                            <li><a href="curriculum.html">课程表</a></li>
+                             
+                            <li><a href="activity.html">活动通知</a></li>
+                            <li><a href="competition.html">比赛通知</a></li>
+                            <li><a href="test.html">考试信息</a></li>
+                            <li class="active"><a href="serchgrade.html">成绩查询</a></li>
+                             
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="login.html"> <i class="icon-interface-windows"></i>Login page </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="content-inner">
+                <!-- Page Header-->
+                <header class="page-header">
+                    <div class="container-fluid">
+                        <h2 class="no-margin-bottom">成绩单</h2>
+                    </div>
+                </header>
+                <!-- Breadcrumb-->
+                <div class="breadcrumb-holder container-fluid">
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a>功能</a></li>
+                        <li class="breadcrumb-item ">成绩查询</li>
+                    </ul>
+                </div>
+                <section class="tables"  >
+                    <div class="container-fluid" id ="main">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card">
+								    <div class="card-header d-flex align-items-stretch">
+                                        <h3 class="h4">成绩单</h3>
+                                    </div>
+								<div class="card-body">
+									<div class="table-responsive">
+                                            <table  class="table table-bordered ">
+                                                <thead>
+                                                    <tr>
+                                                        <th>课程号</th>
+                                                        <th>课程名称</th>
+                                                        <th>任课教师</th>
+                                                        <th>课程成绩</th>
+                                                        <th>排名</th>
+                                                        <th>操作</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="coursegrade">
+                                                    <tr id="slot1">
+                                                        <th scope="row">sd0030311</th>
+                                                        <td >java程序语言设计</td>
+                                                        <td >鹿旭东</td>
+                                                        <td >100</td>
+                                                        <td >1/96</td>
+                                                        <td id="test1">
+                                                           <button type="button" class="btn btn-danger"   onclick="retake('test1');return false;">重修</button>
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr id="slot2">
+                                                        <th scope="row"></th>
+                                                        <td id="mon.slot2"></td>
+                                                        <td id="tue.slot2"></td>
+                                                        <td id="wed.slot2"></td>
+                                                        <td id="thr.slot2"></td>
+                                                        <td></td>
+
+                                                    </tr>
+
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+								</div>
+						</div>
+						</div>
+
+						</div>
+					</div>
+				<div class="container-fluid">
+				<div class="pull-right">
+						<div class="col-md-12 col-md-offset-0">
+							<button type="button" class="btn btn-primary" onclick="doPrint()">打印成绩单</button>
+						</div>
+				</div>
+				</div>
+                </section>
+
+                <footer class="main-footer">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <p>Shandong University &copy; 2019</p>
+                                </div>
+                                <div class="col-sm-6 text-right">
+                                    <p>Design by Liu Qianyi,Hei Nailei,Yang Jiyuan </p>
+                                    <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+                                </div>
+                            </div>
+                        </div>
+                </footer>
+		</div>
+    </div>
+    <!-- JavaScript files-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/popper.js/umd/popper.min.js">
+    </script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="vendor/jquery.cookie/jquery.cookie.js">
+    </script>
+    <script src="vendor/chart.js/Chart.min.js"></script>
+    <script src="vendor/jquery-validation/jquery.validate.js"></script>
+    <!-- Main File-->
+    <script src="js/front.js"></script>
+    </div>
+</body>
+
+</html>

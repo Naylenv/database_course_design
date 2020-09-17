@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>山东大学校园助手</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="css/fontastic.css">
+    <!-- Google fonts - Poppins -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="css/custom.css">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="img/favicon.ico">
+    <!-- Tweaks for older IEs-->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+</head>
+
+<body>
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript">
+     $(document).ready(
+	 function() {
+	 	 document.getElementById("userimage").src = sessionStorage.getItem("userimage");
+		 document.getElementById("username").innerHTML = sessionStorage.getItem("username");
+		 document.getElementById("classname").innerHTML = sessionStorage.getItem("userclass");
+		 getalldiscuss();
+     });
+     function getalldiscuss() {
+         $.ajax({
+             url:'http://49.235.169.238:8000/comment/getDiscuss',
+             type:'GET',
+             dataType:'JSON',
+             success:function (data) {
+                 $('#discuss_list').empty();
+                 for(var i=0;i<data.num;i++){
+                     var str="";
+                     str+='<div class="card">'+
+                         '<div class="card-body">'+
+                         '<form class="form-horizontal">'+
+                         '<div class="form-group row">'+
+                         '<img alt="..." class="img-rounded" src='+'"'+data.result[i].img+'"'+'height="50" width="50">'+
+                         '<div class="col-sm-9">'+
+                         '<div type="text" class="font-weight-bold">'+data.result[i].username+'</div>'+
+                         '<div type="text" class="font-weight">'+data.result[i].class+'</div>'+
+                         '</div>'+
+                         '</div>'+
+                         '<div class="line">'+'</div>'+
+                         '<div >'+
+                         '<label class="col-sm-1 form-control-label">'+'</label>'+
+                         '<div class="col-sm-9">'+
+                         '<div type="text">'+data.result[i].text+'</div>'+
+                         '</div>'+
+                         '</div>'+
+                         '<div class="line">'+'</div>'+
+                         '<div >'+
+                         '<div class="col-sm-9">'+
+                         '<p class="font-weight-light">'+data.result[i].time+'</p>'+
+                         '</div>'+
+                         '</div>'+
+                         '<div class="line">'+'</div>'+
+                         '<div class="container-fluid">'+
+                         '<div class="col-sm-4 offset-sm-3">'+
+                         '<button type="button" id = "addlike'+data.result[i].discuss_id+'" class="btn btn-success" onclick="addlike('+data.result[i].discuss_id+')">'+'点赞'+data.result[i].like_num+'</button>&ensp;'+
+                         '<button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#collapseComment'+data.result[i].discuss_id+'" aria-expanded="false" aria-controls="collapseComment'+data.result[i].discuss_id+'" onclick="show_comment('+data.result[i].discuss_id+')">'+'评论区'+'</button>'+
+                         '</div>'+
+                         '<div class="collapse" id="collapseComment'+data.result[i].discuss_id+'">'+
+                         '<div class="line"></div>'+
+                         '<div class="card card-body" id = "comment">'+
+                         '<div class="form-group row">'+
+                         '<div class="col-sm-12">'+
+                         '<textarea class="form-control" rows="2"  id="comment_text'+data.result[i].discuss_id+'"  placeholder="友善的评论是交流的起点"></textarea>'+
+                         '</div>'+
+                         '</div>'+
+                         '<div class="container-fluid">'+
+                         '<div class="pull-right">'+
+                         '<div class="col-md-12 col-md-offset-0">'+
+                         '<button type="button" class="btn btn-primary" onclick="postcomment('+data.result[i].discuss_id+');return false;" >'+'确定'+'</button>'+
+                         '</div>'+
+                         '</div>'+
+                         '</div>'+
+                         '<div class="line"></div>'+
+                         '<div >'+
+                         '<p id ="comment_num'+data.result[i].discuss_id+'" class="font-weight-bold"></p>'+
+                         '</div>'+
+                         '<div id = "comment_list'+data.result[i].discuss_id+'"></div>'+
+                         '</div>'+
+                         '</div>'+
+                         '</div>'+
+                         '</form>'+
+                         '</div>'+
+                         '</div>';
+                     $('#discuss_list').append(str);
+							}
+
+						}
+					 });
+     }
+
+
+    </script>
+    <div class="page">
+        <!-- Main Navbar-->
+        <header class="header">
+            <nav class="navbar">
+                <!-- Search Box-->
+                <div class="search-box">
+                    <button class="dismiss"><i class="icon-close"></i></button>
+                    <form id="searchForm" action="#" role="search">
+                        <input type="search" placeholder="What are you looking for..." class="form-control">
+                    </form>
+                </div>
+                <div class="container-fluid">
+                    <div class="navbar-holder d-flex align-items-center justify-content-between">
+                        <!-- Navbar Header-->
+                        <div class="navbar-header">
+                            <!-- Navbar Brand -->
+                            <a href="index.html" class="navbar-brand d-none d-sm-inline-block">
+                                <div class="brand-text d-none d-lg-inline-block"><span>山东大学
+                                    </span><strong>计算机科学与技术学院</strong></div>
+                                <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>山大计科</strong></div>
+                            </a>
+                            <!-- Toggle Button--><a id="toggle-btn" href="#" class="menu-btn active"><span></span><span></span><span></span></a>
+                        </div>
+                        <!-- Navbar Menu -->
+                        <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+                            <!-- Search-->
+                            <li class="nav-item d-flex align-items-center"><a id="search" href="#"><i
+                                        class="icon-search"></i></a>
+                            </li>
+                            
+                            <!-- Logout    -->
+                            <li class="nav-item">
+                                <a href="login.html" class="nav-link logout"> <span class="d-none d-sm-inline">Logout</span><i class="fa fa-sign-out"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <div class="page-content d-flex align-items-stretch">
+            <!-- Side Navbar -->
+            <nav class="side-navbar">
+                <!-- Sidebar Header-->
+                <div class="sidebar-header d-flex align-items-center">
+                    <div class="avatar"><img id="userimage" alt="..." class="img-fluid rounded-circle"></div>
+                    <div class="title">
+                        <h1 id="username" class="h4"></h1>
+                        <p id ="classname"></p>
+                    </div>
+                </div>
+                <!-- Sidebar Navidation Menus--><span class="heading"></span>
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="index.html"> <i class="icon-home"></i>主界面 </a>
+                    </li>
+                    <li>
+                        <a href="tables.html"> <i class="icon-grid"></i>选课 </a>
+                    </li>
+                    <li  class="active">
+                        <a href="Discuss.html"> <i class="fa fa-bar-chart"></i>讨论区 </a>
+                    </li>
+                    <li >
+                        <a href="forms.html"> <i class="icon-padnote"></i>发布页面 </a>
+                    </li>
+                    <li>
+                        <a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>功能 </a>
+                        <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
+                            <li ><a href="curriculum.html" >课程表</a></li>
+                             
+                            <li><a href="activity.html">活动通知</a></li>
+							<li><a href="competition.html">比赛通知</a></li>
+                            <li><a href="test.html">考试信息</a></li>
+                            <li><a href="serchgrade.html">成绩查询</a></li>
+                             
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="login.html"> <i class="icon-interface-windows"></i>Login page </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="content-inner">
+                <!-- Page Header-->
+                <header class="page-header">
+                    <div class="container-fluid">
+                        <h2 class="no-margin-bottom">讨论区</h2>
+                    </div>
+                </header>
+                <!-- Breadcrumb-->
+                <div class="breadcrumb-holder container-fluid">
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">主页面</a></li>
+                        <li class="breadcrumb-item active">讨论区 </li>
+                    </ul>
+                </div>
+                <script src="js/jquery-3.4.1.min.js"></script>
+                <script type="text/javascript">
+				function postdiscuss() {
+					 //发布帖子
+						var date = new Date();
+						var str={
+							  "userid": parseInt(sessionStorage.getItem("userid")),
+							  "text":document.getElementById("discuss_text").value
+						}
+						document.getElementById("discuss_text").value="",
+						$.ajax({
+							url:'http://49.235.169.238:8000/comment/postdis',
+							type:'POST',
+							dataType:'JSON',
+							contentType: "application/json",
+                            data: JSON.stringify(str),
+							success:function (data)
+							{
+								alert(data.msg);
+								getalldiscuss();
+							},
+							error: function(data) 
+							{
+								alert(data.msg);
+							}
+					});
+				};
+				 function show_comment(discuss_id) {
+					 //显示评论区
+						$.ajax({
+							url:'http://49.235.169.238:8000/comment/getComment/'+discuss_id,
+							type:'GET',
+							dataType:'JSON',
+							success:function (data)
+							{
+								var divname='comment_list'+discuss_id;
+
+								$("#"+divname).empty();
+								document.getElementById("comment_num"+discuss_id).innerHTML = data.num + "条评论";
+								for(var i=0;i<data.num;i++)
+								{
+									var strr= '';
+									strr = '<p>'+data.result[i].username+' : '+data.result[i].text+'</p>';
+									$("#"+divname).append(strr);
+								}
+								
+							},
+							error: function(data) 
+							{
+								alert("获取评论失败");
+							}
+					});
+				};
+			     function postcomment(discuss_id) {
+					 //发布评论
+						var str={
+							  "discuss_id": discuss_id,
+							  "userid": parseInt(sessionStorage.getItem("userid")),
+							  "text":document.getElementById("comment_text"+discuss_id).value
+						}
+						$.ajax({
+							url:'http://49.235.169.238:8000/comment/postcomment',
+							type:'POST',
+							dataType:'JSON',
+							contentType: "application/json",
+                            data: JSON.stringify(str),
+							success:function ()
+							{
+								show_comment(discuss_id);
+							},
+							error: function() 
+							{
+							}
+					});
+				};
+				function addlike(discuss_id) {
+					 //点赞
+						var str={
+							  "discuss_id": discuss_id,
+						}
+						$.ajax({
+							url:'http://49.235.169.238:8000/comment/addlike',
+							type:'POST',
+							dataType:'JSON',
+							contentType: "application/json",
+                            data: JSON.stringify(str),
+							success:function (data)
+							{
+								var newlike = document.getElementById("addlike"+discuss_id).innerHTML;
+								var newtext = new String(newlike);
+								var ch=newtext.substr(2);
+								document.getElementById("addlike"+discuss_id).innerHTML = "点赞"+(Number(ch)+1);
+							},
+							error: function(data) 
+							{
+								alert(data.msg);
+							}
+					});
+				};
+                </script>
+                <!-- Forms Section-->
+				                <section>
+                    <div class="container-fluid">
+                        <div class="row">
+
+                            <!-- Form Elements -->
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-close">
+                                        <div class="dropdown">
+                                            <button type="button" id="closeCard5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i
+                                                    class="fa fa-ellipsis-v"></i></button>
+                                            <div aria-labelledby="closeCard5" class="dropdown-menu dropdown-menu-right has-shadow">
+                                                <a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a>
+                                                <a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-header d-flex align-items-center">
+                                        <h3 class="h4">发布帖子</h3>
+                                    </div>
+                                    <div class="card-body">
+                                            <div class="form-group row">
+                                                <div class="col-sm-12">
+													<textarea class="form-control" rows="2"  id="discuss_text"  placeholder="分享新鲜事..."></textarea>
+                                                </div>
+                                            </div>		
+											<div class="container-fluid">
+												<div class="pull-right">
+													<div class="col-md-12 col-md-offset-0">
+														<button type="button" class="btn btn-primary" onclick="postdiscuss();return false;" >发布</button>
+													</div>
+												</div>
+											</div>
+                                    </div>
+									<div class="alert alert-warning hid" role="alert">
+									   <button type="button" class="close" data-dismiss="alert" aria-label="Close">          
+										  <span aria-hidden="true">&times;</span>
+									   </button>
+									  <strong>请遵守互联网相关法律法规!</strong> 
+									</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <!-- 帖子 -->
+                        <div class="col-lg-12" id = "discuss_list">
+
+						</div>
+                        </div>
+                    </div>
+
+                </section>
+
+                <!-- Page Footer-->
+                <footer class="main-footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <p>Shandong University &copy; 2019</p>
+                            </div>
+                            <div class="col-sm-6 text-right">
+                                <p>Design by Liu Qianyi,Hei Nailei,Yang Jiyuan
+                                    <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+    <!-- JavaScript files-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/popper.js/umd/popper.min.js">
+    </script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="vendor/jquery.cookie/jquery.cookie.js">
+    </script>
+    <script src="vendor/chart.js/Chart.min.js"></script>
+    <script src="vendor/jquery-validation/jquery.validate.min.js"></script>
+    <!-- Main File-->
+    <script src="js/front.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>山东大学校园助手</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="css/fontastic.css">
+    <!-- Google fonts - Poppins -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="css/custom.css">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="img/favicon.ico">
+    <!-- Tweaks for older IEs-->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+</head>
+
+<body>
+<script src="js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript">
+     $(document).ready(function() {
+         document.getElementById("userimage").src = sessionStorage.getItem("userimage");
+         document.getElementById("username").innerHTML = sessionStorage.getItem("username");
+         document.getElementById("classname").innerHTML = sessionStorage.getItem("userclass");
+		 getStudentCourse();
+     });
+     function getStudentCourse() {
+
+         $.ajax({
+             url: 'http://49.235.169.238:8000/api/gett_courselist/'+sessionStorage.getItem("userid"),
+             type: 'GET',
+             dataType: 'JSON',
+
+             success: function(data) {
+				 var timelist;
+                 for(var i=0;i<data.num;i++)
+				 {
+					var timelist=data.result[i].time.split("，");
+				   for(var j=0;j<timelist.length;j++)
+                     switch (timelist[j]) {
+
+                         case "星期一第1大节":
+                             document.getElementById("mon.slot1").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期一第2大节":
+                             document.getElementById("mon.slot2").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期一第3大节":
+                             document.getElementById("mon.slot3").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期一第4大节":
+                             document.getElementById("mon.slot4").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期一第5大节":
+                             document.getElementById("mon.slot5").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期二第1大节":
+                             document.getElementById("tue.slot1").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期二第2大节":
+                             document.getElementById("tue.slot2").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期二第3大节":
+                             document.getElementById("tue.slot3").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期二第4大节":
+                             document.getElementById("tue.slot4").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期二第5大节":
+                             document.getElementById("tue.slot5").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期三第1大节":
+                             document.getElementById("wed.slot1").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期三第2大节":
+                             document.getElementById("wed.slot2").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期三第3大节":
+                              document.getElementById("wed.slot3").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期三第4大节":
+                              document.getElementById("wed.slot4").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期三第5大节":
+                              document.getElementById("wed.slot5").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期四第1大节":
+                              document.getElementById("thr.slot1").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期四第2大节":
+                             document.getElementById("thr.slot2").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期四第3大节":
+                             document.getElementById("thr.slot3").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期四第4大节":
+                             document.getElementById("thr.slot4").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期四第5大节":
+                             document.getElementById("thr.slot5").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期五第1大节":
+                             document.getElementById("fri.slot1").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期五第2大节":
+                             document.getElementById("fri.slot2").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期五第3大节":
+                             document.getElementById("fri.slot3").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期五第4大节":
+                             document.getElementById("fri.slot4").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期五第5大节":
+                             document.getElementById("fri.slot5").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期六第1大节":
+                             document.getElementById("sat.slot1").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期六第2大节":
+                             document.getElementById("sat.slot2").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期六第3大节":
+                             document.getElementById("sat.slot3").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期六第4大节":
+                             document.getElementById("sat.slot4").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期六第5大节":
+                             document.getElementById("sat.slot5").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期日第1大节":
+                             document.getElementById("sun.slot1").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期日第2大节":
+                             document.getElementById("sun.slot2").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期日第3大节":
+                             document.getElementById("sun.slot3").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期日第4大节":
+                             document.getElementById("sun.slot4").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+                         case "星期日第5大节":
+                             document.getElementById("sun.slot5").innerHTML=data.result[i].classname+' '+data.result[i].address;
+                                             break;
+
+                     }
+                 }
+              },
+             error: function() { }
+         });
+     }
+	 function doPrint(){
+			var userAgent = navigator.userAgent.toLowerCase(); //取得浏览器的userAgent字符串
+			if (userAgent.indexOf("trident") > -1){
+				alert("请使用google或者360浏览器打印");
+				return false;
+			}else if(userAgent.indexOf('msie')>-1){
+				var onlyChoseAlert = simpleAlert({
+				   "content":"请使用Google或者360浏览器打印",
+				   "buttons":{
+					   "确定":function () {
+						   onlyChoseAlert.close();
+					   }
+				   }
+			   })
+				alert("请使用google或者360浏览器打印");
+				return false;
+			}else{//其它浏览器使用lodop
+				var oldstr = document.body.innerHTML;
+				var headstr = "<html><head><title></title></head><body>";
+				var footstr = "</body>";
+				var printData = document.getElementById("main").innerHTML; //获得 div 里的所有 html 数据
+				document.body.innerHTML = headstr+printData+footstr;
+				window.print();
+				document.body.innerHTML = oldstr ;
+			}
+	}
+    </script>
+    <div class="page">
+        <!-- Main Navbar-->
+        <header class="header">
+            <nav class="navbar">
+                <div class="container-fluid">
+                    <div class="navbar-holder d-flex align-items-center justify-content-between">
+                        <!-- Navbar Header-->
+                        <div class="navbar-header">
+                            <!-- Navbar Brand -->
+                            <a href="index.html" class="navbar-brand d-none d-sm-inline-block">
+                                <div class="brand-text d-none d-lg-inline-block"><span>山东大学</span><strong>计算机科学与技术学院</strong></div>
+                                <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>山大计科</strong></div>
+                            </a>
+                            <!-- Toggle Button--><a id="toggle-btn" href="#" class="menu-btn active"><span></span><span></span><span></span></a>
+                        </div>
+                        <!-- Navbar Menu -->
+                        <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+                            <!-- Logout    -->
+                            <li class="nav-item">
+                                <a href="login.html" class="nav-link logout"> <span class="d-none d-sm-inline">Logout</span><i class="fa fa-sign-out"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <div class="page-content d-flex align-items-stretch">
+            <!-- Side Navbar -->
+            <nav class="side-navbar">
+                <!-- Sidebar Header-->
+                <div class="sidebar-header d-flex align-items-center">
+                    <div class="avatar"><img id = "userimage" alt="..." class="img-fluid rounded-circle"></div>
+                    <div class="title">
+                        <h1 class="h4" id ="username"></h1>
+                        <p id ="classname"></p>
+                    </div>
+                </div>
+                <!-- Sidebar Navidation Menus--><span class="heading"></span>
+                <ul class="list-unstyled">
+
+                    <li>
+                        <a href="t_course.html"> <i class="icon-grid"></i>授课信息 </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#exampledropdownDropdown" aria-expanded="true" data-toggle="collapse"> <i class="icon-interface-windows"></i>功能 </a>
+                        <ul id="exampledropdownDropdown" class="active">
+                            <li class="active"><a href="t_curriculum.html" >授课表</a></li>
+                            <li ><a href="t_Scoreregistration.html" >成绩录入</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="login.html"> <i class="icon-interface-windows"></i>Login page </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="content-inner">
+                <!-- Page Header-->
+                <header class="page-header">
+                    <div class="container-fluid">
+                        <h2 class="no-margin-bottom">课程表</h2>
+                    </div>
+                </header>
+                <!-- Breadcrumb-->
+                <div class="breadcrumb-holder container-fluid">
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a>功能</a></li>
+                        <li class="breadcrumb-item ">课程表</li>
+                    </ul>
+                </div>
+                <section class="tables"  >
+                    <div class="container-fluid" id ="main">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card">
+								    <div class="card-header d-flex align-items-stretch">
+                                        <h3 class="h4">本周课程</h3>
+                                    </div>
+								<div class="card-body">
+									<div class="table-responsive">
+                                            <table  class="table table-bordered ">
+                                                <thead>
+                                                    <tr>
+                                                        <th>节次\星期</th>
+                                                        <th>星期一</th>
+                                                        <th>星期二</th>
+                                                        <th>星期三</th>
+                                                        <th>星期四</th>
+                                                        <th>星期五</th>
+                                                        <th>星期六</th>
+                                                        <th>星期日</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="hasselected">
+                                                    <tr id="slot1">
+                                                        <th scope="row">第一节</th>
+                                                        <td id="mon.slot1"></td>
+                                                        <td id="tue.slot1"></td>
+                                                        <td id="wed.slot1"></td>
+                                                        <td id="thr.slot1"></td>
+                                                        <td id="fri.slot1"></td>
+                                                        <td id="sat.slot1"></td>
+                                                        <td id="sun.slot1"></td>
+                                                    </tr>
+                                                    <tr id="slot2">
+                                                        <th scope="row">第二节</th>
+                                                        <td id="mon.slot2"></td>
+                                                        <td id="tue.slot2"></td>
+                                                        <td id="wed.slot2"></td>
+                                                        <td id="thr.slot2"></td>
+                                                        <td id="fri.slot2"></td>
+                                                        <td id="sat.slot2"></td>
+                                                        <td id="sun.slot2"></td>
+                                                    </tr>
+                                                    <tr id="slot3">
+                                                        <th scope="row">第三节</th>
+                                                        <td id="mon.slot3"></td>
+                                                        <td id="tue.slot3"></td>
+                                                        <td id="wed.slot3"></td>
+                                                        <td id="thr.slot3"></td>
+                                                        <td id="fri.slot3"></td>
+                                                        <td id="sat.slot3"></td>
+                                                        <td id="sun.slot3"></td>
+                                                    </tr>
+                                                    <tr id="slot4">
+                                                        <th scope="row">第四节</th>
+                                                        <td id="mon.slot4"></td>
+                                                        <td id="tue.slot4"></td>
+                                                        <td id="wed.slot4"></td>
+                                                        <td id="thr.slot4"></td>
+                                                        <td id="fri.slot4"></td>
+                                                        <td id="sat.slot4"></td>
+                                                        <td id="sun.slot4"></td>
+                                                    </tr>
+                                                    <tr id="slot5">
+                                                        <th scope="row">第五节</th>
+                                                        <td id="mon.slot5"></td>
+                                                        <td id="tue.slot5"></td>
+                                                        <td id="wed.slot5"></td>
+                                                        <td id="thr.slot5"></td>
+                                                        <td id="fri.slot5"></td>
+                                                        <td id="sat.slot5"></td>
+                                                        <td id="sun.slot5"></td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+								</div>
+						</div>
+						</div>
+
+						</div>
+					</div>
+				<div class="container-fluid">
+				<div class="pull-right">
+						<div class="col-md-12 col-md-offset-0">
+							<button type="button" class="btn btn-success" onclick="doPrint()">打印授课表</button>
+						</div>
+				</div>
+				</div>
+                </section>
+
+                <footer class="main-footer">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <p>Shandong University &copy; 2019</p>
+                                </div>
+                                <div class="col-sm-6 text-right">
+                                    <p>Design by Liu Qianyi,Hei Nailei,Yang Jiyuan </p>
+                                    <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+                                </div>
+                            </div>
+                        </div>
+                </footer>
+		</div>
+    </div>
+    <!-- JavaScript files-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/popper.js/umd/popper.min.js">
+    </script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="vendor/jquery.cookie/jquery.cookie.js">
+    </script>
+    <script src="vendor/chart.js/Chart.min.js"></script>
+    <script src="vendor/jquery-validation/jquery.validate.js"></script>
+    <!-- Main File-->
+    <script src="js/front.js"></script>
+</body>
+
+</html>

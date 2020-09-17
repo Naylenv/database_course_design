@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>山东大学校园助手</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="css/fontastic.css">
+    <!-- Google fonts - Poppins -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="css/custom.css">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="img/favicon.ico">
+    <!-- Tweaks for older IEs--><!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+  </head>
+  <body>
+    <div class="page login-page">
+      <div class="container d-flex align-items-center">
+        <div class="form-holder has-shadow">
+          <div class="row">
+            <!-- Logo & Information Panel-->
+            <div class="col-lg-6">
+              <div class="info d-flex align-items-center">
+                <div class="content">
+                  <div class="logo">
+                    <h1>校园助手</h1>
+                  </div>
+                  <p>山东大学计算机科学与技术学院</p>
+                </div>
+              </div>
+            </div>
+            <!-- Form Panel    -->
+			<script src="js/jquery-3.4.1.min.js"></script>
+                    <script type="text/javascript">
+						$(document).ready(function() {
+							document.body.style.backgroundImage="url(./img/bg.jpg)";
+						});
+						document.body.addEventListener('keyup', function (e) {
+								if (e.keyCode == '13') {
+									$("#login").click();
+								}
+							})
+                        function login() {
+							var str = {
+								"id": document.getElementById("username").value,
+								"pwd": document.getElementById("password").value,
+							}
+							if(document.getElementById("username").value=="0"&&document.getElementById("password").value=="0") window.location.href ="m_student_basic.html"
+                            $.ajax({
+                                type: 'POST',
+                                url: 'http://49.235.169.238:8000/api/login/',
+                                dataType: 'JSON',
+								contentType: "application/json",
+                                data: JSON.stringify(str),
+                                success: function(data) {
+									sessionStorage.setItem("userid",document.getElementById("username").value);
+                                    if(data.code==200)
+									{
+										alert("欢迎您!");
+										if(data.user=="student") window.location.href = "index.html";
+										else if(data.user=="teacher") window.location.href = "t_course.html";
+										
+									}
+									if(data.code==404)
+									{
+										alert(data.msg);
+									}
+                                },
+                                error: function(data) 
+								{
+									alert(data.msg);
+								}
+                            });
+					};
+					</script>
+            <div class="col-lg-6 bg-white">
+              <div class="form d-flex align-items-center">
+                <div class="content">
+                  <form method="post" class="form-validate">
+                    <div class="form-group">
+                      <input id="username" type="number" style="ime-mode:Disabled" name="loginUsername" required data-msg="Please enter your username" class="input-material">
+                      <label for="username" class="label-material">学号/工号</label>
+                    </div>
+                    <div class="form-group">
+                      <input id="password" type="password" name="loginPassword" required data-msg="Please enter your password" class="input-material">
+                      <label for="password" class="label-material">密码</label>
+                    </div><a id="login" class="btn btn-primary" onclick="login()">登录</a>
+                    <!-- This should be submit button but I replaced it with <a> for demo purposes-->
+                  </form><a href="#" class="forgot-pass">忘记密码？</a><br><small></small><a href="register.html" class="signup">注册</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="copyrights text-center">
+        <p>Design by <a href="#" class="external">Liu Qianyi ,Hei Nailei ,Yang Jiyuan</a>
+          <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+        </p>
+      </div>
+    </div>
+    <!-- JavaScript files-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/popper.js/umd/popper.min.js"> </script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="vendor/jquery.cookie/jquery.cookie.js"> </script>
+    <script src="vendor/chart.js/Chart.min.js"></script>
+    <script src="vendor/jquery-validation/jquery.validate.min.js"></script>
+    <!-- Main File-->
+    <script src="js/front.js"></script>
+  </body>
+</html>

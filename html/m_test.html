@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>山东大学校园助手</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="css/fontastic.css">
+    <!-- Google fonts - Poppins -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="css/custom.css">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="img/favicon.ico">
+    <!-- Tweaks for older IEs-->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+</head>
+
+<body>
+<script src="js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript">
+
+     function searchclass() {
+
+         //搜索课程函数
+         var str = {
+             "name": document.getElementById("cname").value,
+             "course_id": document.getElementById("cid").value,
+             "teacher": document.getElementById("teacher").value,
+             "department": document.getElementById("college").value,
+         }
+
+         $.ajax({
+             type: 'POST',
+             url: 'http://49.235.169.238:8000/api/getselectedcourse',
+             dataType: 'JSON',
+             contentType: "application/json",
+             data: JSON.stringify(str),
+             success: function (data) {
+
+                 $('#choose').empty();
+                 for (var i = 0; i < data.result.length; i++) {
+                     var str = "";
+                     str += '<tr>' +
+                         '<th scope="row">' + data.result[i].course_id + '</th>' +
+                         '<td>' + data.result[i].classname + '</td>' +
+                         '<td>' + data.result[i].teacher + '</td>' +
+                         '<td>' + data.result[i].department + '</td>' +
+                         '<td>' +
+                         '<button type="button" class="btn btn-primary"   onclick="prepare(\'' +
+                         data.result[i].course_id +
+                         '\');return false;">排考</button>' +
+                         '</td>' +
+                         '</tr>';
+
+                     $('#choose').append(str);
+
+                 }
+
+             },
+         })
+     }
+     function prepare(cid) {
+         sessionStorage.setItem("cid",cid);
+         $("#testinfo").empty()
+         $('#testinfo').append("您现在排考的课程是: "+cid);
+
+     }
+
+     function arrangetest() {
+
+         var str = {
+             "course_id": sessionStorage.getItem("cid"),
+             "time": document.getElementById("testdate").value+"  "+ document.getElementById("testtime").value,
+             "address": document.getElementById("testaddr").value,
+         }
+         alert(str.time);
+         $.ajax({
+             type: 'POST',
+             url: 'http://49.235.169.238:8000/api/enrolltest/',
+             dataType: 'JSON',
+             contentType: "application/json",
+             data: JSON.stringify(str),
+             success: function (data) {
+                alert("排考成功");
+
+             },
+             error:function (data) {
+                 alert(data.mesg);
+             }
+         })
+     }
+
+
+
+
+    </script>
+    <div class="page">
+        <!-- Main Navbar-->
+        <header class="header">
+            <nav class="navbar">
+                <div class="container-fluid">
+                    <div class="navbar-holder d-flex align-items-center justify-content-between">
+                        <!-- Navbar Header-->
+                        <div class="navbar-header">
+                            <!-- Navbar Brand -->
+                            <a href="index.html" class="navbar-brand d-none d-sm-inline-block">
+                                <div class="brand-text d-none d-lg-inline-block"><span>山东大学</span><strong>计算机科学与技术学院</strong></div>
+                                <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>山大计科</strong></div>
+                            </a>
+                            <!-- Toggle Button--><a id="toggle-btn" href="#" class="menu-btn active"><span></span><span></span><span></span></a>
+                        </div>
+                        <!-- Navbar Menu -->
+                        <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+                            <!-- Logout    -->
+                            <li class="nav-item">
+                                <a href="login.html" class="nav-link logout"> <span class="d-none d-sm-inline">Logout</span><i class="fa fa-sign-out"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <div class="page-content d-flex align-items-stretch">
+            <!-- Side Navbar -->
+            <nav class="side-navbar">
+                <!-- Sidebar Header-->
+                <div class="sidebar-header d-flex align-items-center">
+                    <div class="avatar" ><img id ="userimage" src="img/sdu.png"alt="..." class="img-fluid rounded-circle"></div>
+                    <div class="title">
+                        <h1 id="username" class="h4">管理员</h1>
+						<p>校园助手</p>
+                    </div>
+                </div>
+                <!-- Sidebar Navidation Menus--><span class="heading"></span>
+                <ul class="list-unstyled">
+                     <li>
+                        <a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse">
+                            <i class="icon-interface-windows "></i>学生信息
+                        </a>
+                        <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
+							<li><a href="m_inputstudent.html">新增学生</a></li>
+                            <li><a href="m_student_basic.html">学生基本信息维护</a></li>
+                            <li ><a href="m_student_rewards_and_punishments.html" >学生奖惩信息维护</a></li>
+                        </ul>
+                    </li>
+
+                     <li>
+                        <a href="m_teacher_basic.html"> <i class="fa icon-user"></i>教师信息 </a>
+                    </li>
+                    <li>
+                        <a href="m_course.html"> <i class="icon-presentation"></i>课程信息 </a>
+                    </li>
+                    <li>
+                        <a href="m_department.html"> <i class="icon-check"></i>院系信息 </a>
+                    </li>
+                    <li class="active">
+                        <a href="m_test.html"> <i class="icon-padnote"></i>考试信息 </a>
+                    </li>
+                    <li>
+                        <a href="m_maintenance.html"> <i class="icon-check"></i>功能维护 </a>
+                    </li>
+                    <li>
+                        <a href="login.html"> <i class="icon-interface-windows"></i>退出登录 </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="content-inner">
+                <!-- Page Header-->
+                <header class="page-header">
+                    <div class="container-fluid">
+                        <h2 class="no-margin-bottom">考试信息维护</h2>
+                    </div>
+                </header>
+                <!-- Breadcrumb-->
+                <div class="breadcrumb-holder container-fluid">
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">考试信息</a></li>
+                        <li class="breadcrumb-item active">课程排考</li>
+                    </ul>
+                </div>
+                <section class="tables">
+                    <div class="container-fluid">
+                            <div class="row">
+                                <!-- Trending Articles-->
+                                <div class="col-lg-12">
+                                    <div class="articles card">
+                                        <div class="card-close">
+                                            <div class="dropdown">
+                                                <button type="button" id="closeCard4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
+                                                <div aria-labelledby="closeCard4" class="dropdown-menu dropdown-menu-right has-shadow">
+                                                    <a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a>
+                                                    <a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-header d-flex align-items-center">
+                                            <h2 class="h3">课程检索</h2>
+                                            <div class="badge badge-rounded bg-green" >课程信息查询 </div>
+                                        </div>
+                                        <div class="card-body no-padding" id="mesgofaward">
+
+                                            <div class="card-body">
+									<form class="form-inline" >
+										<div class="form-group">
+											<label for="id">课程号&ensp;  </label>
+											<input type="text" style="width:180px;" class="form-control" id="cid"
+												   placeholder="请输入课程号">&ensp;
+										</div>
+										<div class="form-group">
+											<label for="name">&ensp;课程名&ensp; </label>
+											<input type="text" style="width:180px;" class="form-control" id="cname"
+												   placeholder="请输入课程名">
+										</div>
+										<div class="form-group">
+											<label for="department">&ensp;任课教师 &ensp;</label>
+											<input type="text" style="width:180px;" class="form-control" id="teacher"
+												   placeholder="请输入任课教师">&ensp;
+										</div>
+										<div class="form-group">
+											<label for="classroom">开课学院&ensp; </label>
+											<input type="text" style="width:180px;" class="form-control" id="college"
+												   placeholder="请输入开课学院">&ensp;
+										</div>
+                                        <label>&ensp;</label>
+										<button type="button" class="btn btn-primary" onclick="searchclass() ;return false;">检索</button>
+									</form>
+									</div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                    </div>
+
+                    <div class="container-fluid">
+                            <div class="row">
+                                <!-- Trending Articles-->
+                                <div class="col-lg-12">
+                                    <div class="articles card">
+                                        <div class="card-close">
+                                            <div class="dropdown">
+                                                <button type="button" id="closeCard4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
+                                                <div aria-labelledby="closeCard4" class="dropdown-menu dropdown-menu-right has-shadow">
+                                                    <a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a>
+                                                    <a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-header d-flex align-items-center">
+                                            <h2 class="h3">匹配课程</h2>
+
+                                        </div>
+                                        <div class="card-body no-padding" id="mesgofaward">
+
+                                            <div class="card-body">
+									<form class="form-inline" >
+                                       <table class="table table-bordered table-sm" >
+                                           <thead>
+                                           <tr>
+                                               <th>课程号</th>
+                                               <th>课程名</th>
+                                               <th>任课教师</th>
+                                               <th>开课学院</th>
+                                               <th>操作</th>
+                                           </tr>
+                                           </thead>
+                                           <tbody id ="choose">
+
+
+                                           </tbody>
+                                       </table>
+									</form>
+									</div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                    </div>
+
+
+
+
+
+
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card">
+								    <div class="card-header d-flex align-items-stretch">
+                                        <h3 class="h4" id="testinfo">排考信息</h3>
+                                    </div>
+								<div class="card-body">
+
+										<div class="span4 ">
+											<div class="control-group">
+												<label class="control-label" style="color: black">考试日期：</label>
+                                                    <span class="text" >
+                                                        <div class="col-12">
+                                                        <input type="date" class="form-control" id="testdate" >
+                                                        </div>
+
+                                                    </span>&ensp;
+                                                <label class="control-label" style="color: black">考试时间：</label>
+                                                    <span class="text" >
+                                                        <div class="col-12">
+                                                        <input type="txt" class="form-control" id="testtime" >
+                                                        </div>
+
+                                                    </span>&ensp;
+                                                <label class="control-label" style="color: black">考试地点：</label>
+													<span class="text" >
+                                                        <div class="col-10">
+                                                        <input type="text" class="form-control" id="testaddr" >
+                                                        </div>
+
+                                                    </span>&ensp;
+
+													<span class="text" >
+                                                        <div class="col-10">
+                                                            <button type="button" class="btn btn-primary"   onclick="arrangetest()">确定</button>
+                                                        </div>
+
+                                                    </span>&ensp;
+
+
+
+
+											</div>
+
+
+										</div>
+
+
+
+									</div>
+								</div>
+                    </div>
+					</div>
+					</div>
+                </section>
+
+
+
+
+
+
+                <footer class="main-footer">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <p>Shandong University &copy; 2019</p>
+                                </div>
+                                <div class="col-sm-6 text-right">
+                                    <p>Design by Liu Qianyi,Hei Nailei,Yang Jiyuan </p>
+                                    <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
+            </div>
+        </div>
+    </div>
+    <!-- JavaScript files-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/popper.js/umd/popper.min.js">
+    </script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="vendor/jquery.cookie/jquery.cookie.js">
+    </script>
+    <script src="vendor/chart.js/Chart.min.js"></script>
+    <script src="vendor/jquery-validation/jquery.validate.msddxin.js"></script>
+    <!-- Main File-->
+    <script src="js/front.js"></script>
+</body>
+
+</html>

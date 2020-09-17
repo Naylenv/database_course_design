@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>山东大学校园助手</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="css/fontastic.css">
+    <!-- Google fonts - Poppins -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="css/custom.css">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="img/favicon.ico">
+    <!-- Tweaks for older IEs-->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+</head>
+
+<body>
+<script src="js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript">
+     $(document).ready(function () {
+
+         $.ajax({
+             type: 'GET',
+             url: 'http://49.235.169.238:8000/api/getalldepartment/',
+             dataType: 'JSON',
+             success: function (data) {
+                  $('#xsm').empty();
+                 for(var i=0;i<data.num;i++){
+                        var str='<option value="' +
+                            data.result[i].department_id +
+                            '">' +
+                            data.result[i].department_name +
+                            '</option>';
+                        $('#xsm').append(str);
+                    }
+
+
+             }
+
+         })
+
+     } );
+
+     function classlist(department_id=document.getElementById("xsm").value) {
+        $.ajax({
+            type: 'GET',
+            url: 'http://49.235.169.238:8000/api/getallclass/'+department_id,
+            dataType: 'JSON',
+            success: function (data) {
+
+                $('#bm').empty();
+                for (var i = 0; i < data.num; i++) {
+                var str = '<option value="' +
+                    data.result[i].class_id +
+                   '">' + data.result[i].class_name + '</option>';
+
+                $('#bm').append(str);
+                }
+
+            }
+        });
+     }
+
+
+
+
+     function changestudentinfo() {
+        var obj=document.getElementById('xb');
+        var index=obj.selectedIndex; //序号，取当前选中选项的序号
+        var val = obj.options[index].text;
+         var str={
+            "id":parseInt(document.getElementById("xh").value),
+            "department_id":parseInt(document.getElementById("xsm").value),
+             "classroom_id":parseInt(document.getElementById("bm").value),
+            "age":parseInt(document.getElementById("age").value),
+             "name":document.getElementById("xm").value,
+             "sex":val,
+             "person_id":document.getElementById("p_id").value,
+             "phone_num":document.getElementById("phone_num").value,
+
+
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: 'http://49.235.169.238:8000/api/enrollnewstudent/',
+            dataType: 'JSON',
+            contentType: "application/json",
+            data: JSON.stringify(str),
+            success:function (data) {
+               alert("录入成功!");
+
+            },
+            error: function() {
+                alert("录入失败");
+
+            }
+        });
+     }
+
+
+
+    </script>
+    <div class="page">
+        <!-- Main Navbar-->
+        <header class="header">
+            <nav class="navbar">
+                <div class="container-fluid">
+                    <div class="navbar-holder d-flex align-items-center justify-content-between">
+                        <!-- Navbar Header-->
+                        <div class="navbar-header">
+                            <!-- Navbar Brand -->
+                            <a href="index.html" class="navbar-brand d-none d-sm-inline-block">
+                                <div class="brand-text d-none d-lg-inline-block"><span>山东大学</span><strong>计算机科学与技术学院</strong></div>
+                                <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>山大计科</strong></div>
+                            </a>
+                            <!-- Toggle Button--><a id="toggle-btn" href="#" class="menu-btn active"><span></span><span></span><span></span></a>
+                        </div>
+                        <!-- Navbar Menu -->
+                        <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+                            <!-- Logout    -->
+                            <li class="nav-item">
+                                <a href="login.html" class="nav-link logout"> <span class="d-none d-sm-inline">Logout</span><i class="fa fa-sign-out"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <div class="page-content d-flex align-items-stretch">
+            <!-- Side Navbar -->
+            <nav class="side-navbar">
+                <!-- Sidebar Header-->
+                <div class="sidebar-header d-flex align-items-center">
+                    <div class="avatar" ><img id ="userimage" src="img/sdu.png"alt="..." class="img-fluid rounded-circle"></div>
+                    <div class="title">
+                        <h1 id="username" class="h4">管理员</h1>
+						<p>校园助手</p>
+                    </div>
+                </div>
+                <!-- Sidebar Navidation Menus--><span class="heading"></span>
+                <ul class="list-unstyled">
+                     <li>
+                        <a href="#exampledropdownDropdown" aria-expanded="true" data-toggle="collapse">
+                            <i class="icon-interface-windows "></i>学生信息
+                        </a>
+                        <ul id="exampledropdownDropdown" class="active">
+							<li class="active"><a href="m_inputstudent.html">新增学生</a></li>
+                            <li><a href="m_student_basic.html">学生基本信息维护</a></li>
+                            <li ><a href="m_student_rewards_and_punishments.html" >学生奖惩信息维护</a></li>
+                        </ul>
+                    </li>
+
+                     <li>
+                        <a href="m_teacher_basic.html"> <i class="fa icon-user"></i>教师信息 </a>
+                    </li>
+                    <li>
+                        <a href="m_course.html"> <i class="icon-presentation"></i>课程信息 </a>
+                    </li>
+                    <li>
+                        <a href="m_department.html"> <i class="icon-check"></i>院系信息 </a>
+                    </li>
+                    <li>
+                        <a href="m_test.html"> <i class="icon-padnote"></i>考试信息 </a>
+                    </li>
+                    <li>
+                        <a href="m_maintenance.html"> <i class="icon-check"></i>功能维护 </a>
+                    </li>
+                    <li>
+                        <a href="login.html"> <i class="icon-interface-windows"></i>退出登录 </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="content-inner">
+                <!-- Page Header-->
+                <header class="page-header">
+                    <div class="container-fluid">
+                        <h2 class="no-margin-bottom">学生信息维护</h2>
+                    </div>
+                </header>
+                <!-- Breadcrumb-->
+                <div class="breadcrumb-holder container-fluid">
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">学生信息</a></li>
+                        <li class="breadcrumb-item active">新增学生</li>
+                    </ul>
+                </div>
+                <section class="tables">
+
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card">
+								    <div class="card-header d-flex align-items-stretch">
+                                        <h3 class="h4">录入学生信息</h3>
+                                    </div>
+								<div class="card-body">
+
+										<div class="span4 ">
+											<div class="control-group">
+												<label class="control-label" style="color: black">姓&emsp;&emsp;名：</label>
+													<span class="text"  ><input type="text" class="form-control" id="xm"
+												   placeholder="123">
+                                                    </span>&ensp;
+
+											</div>
+											<div class="control-group">
+												<label class="control-label" style="color: black">性&emsp;&emsp;别：</label>
+													<span class="text" >
+                                                        <select name="account" class="form-control mb-3"   id="xb">
+                                                        <option value="0">男</option>
+                                                        <option value="1">女</option>
+
+                                                        </select>
+
+                                                    </span>&ensp;
+
+											</div>
+											<div class="control-group">
+												<label class="control-label" style="color: black">年&emsp;&emsp;龄：</label>
+													<span class="text" ><input type="text" class="form-control" id="age"
+												   placeholder="123">
+                                                    </span>&ensp;
+
+											</div>
+											<div class="control-group">
+												<label class="control-label" style="color: black">身份证号：</label>
+													<span class="text" ><input type="text" class="form-control" id="p_id"
+												   placeholder="123">
+                                                    </span>&ensp;
+
+											</div>
+
+										</div>
+										<div class="span2 ">
+											<div class="control-group">
+												<label class="control-label" style="color: black">学&emsp;&emsp;号：</label>
+													<span class="text" >
+                                                        <input type="text" class="form-control" id="xh"
+												                placeholder="123">
+                                                    </span>&ensp;
+
+
+											</div>
+                                            <div class="control-group">
+												<label class="control-label" style="color: black">手机号码：</label>
+													<span class="text" >
+                                                        <input type="text" class="form-control" id="phone_num"
+												                placeholder="123">
+                                                    </span>&ensp;
+
+
+											</div>
+											<div class="control-group">
+												<label class="control-label" style="color: black">系&emsp;&emsp;所：</label>
+													<span class="text" >
+                                                         <select name="account" class="form-control mb-3"   id="xsm" onclick="classlist();return false;">
+
+
+                                                        </select>
+
+                                                    </span>&ensp;
+
+
+											</div>
+                                            <div class="control-group">
+												<label class="control-label" style="color: black">班&emsp;&emsp;级：</label>
+													<span class="text" >
+                                                         <select name="account" class="form-control mb-3"   id="bm"   >
+
+                                                        </select>
+
+                                                    </span>&ensp;
+
+                                                    <button type="button" class="btn btn-primary" onclick="changestudentinfo();return false;">录入</button>
+										    </div>
+
+
+
+
+										</div>
+
+
+
+									</div>
+								</div>
+                    </div>
+					</div>
+					</div>
+                </section>
+
+
+
+
+
+
+                <footer class="main-footer">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <p>Shandong University &copy; 2019</p>
+                                </div>
+                                <div class="col-sm-6 text-right">
+                                    <p>Design by Liu Qianyi,Hei Nailei,Yang Jiyuan </p>
+                                    <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
+            </div>
+        </div>
+    </div>
+    <!-- JavaScript files-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/popper.js/umd/popper.min.js">
+    </script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="vendor/jquery.cookie/jquery.cookie.js">
+    </script>
+    <script src="vendor/chart.js/Chart.min.js"></script>
+    <script src="vendor/jquery-validation/jquery.validate.msddxin.js"></script>
+    <!-- Main File-->
+    <script src="js/front.js"></script>
+</body>
+
+</html>

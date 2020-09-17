@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>山东大学校园助手</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="css/fontastic.css">
+    <!-- Google fonts - Poppins -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="css/custom.css">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="img/favicon.ico">
+    <!-- Tweaks for older IEs-->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+</head>
+
+<body>
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript">
+     $(document).ready(function() {
+	 	 document.getElementById("userimage").src = sessionStorage.getItem("userimage");
+		 document.getElementById("username").innerHTML = sessionStorage.getItem("username");
+		 document.getElementById("classname").innerHTML = sessionStorage.getItem("userclass");
+     });
+    </script>
+    <div class="page">
+        <!-- Main Navbar-->
+        <header class="header">
+            <nav class="navbar">
+                <!-- Search Box-->
+                <div class="search-box">
+                    <button class="dismiss"><i class="icon-close"></i></button>
+                    <form id="searchForm" action="#" role="search">
+                        <input type="search" placeholder="What are you looking for..." class="form-control">
+                    </form>
+                </div>
+                <div class="container-fluid">
+                    <div class="navbar-holder d-flex align-items-center justify-content-between">
+                        <!-- Navbar Header-->
+                        <div class="navbar-header">
+                            <!-- Navbar Brand -->
+                            <a href="index.html" class="navbar-brand d-none d-sm-inline-block">
+                                <div class="brand-text d-none d-lg-inline-block"><span>山东大学
+                                    </span><strong>计算机科学与技术学院</strong></div>
+                                <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>山大计科</strong></div>
+                            </a>
+                            <!-- Toggle Button--><a id="toggle-btn" href="#" class="menu-btn active"><span></span><span></span><span></span></a>
+                        </div>
+                        <!-- Navbar Menu -->
+                        <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+                            <!-- Search-->
+                            <li class="nav-item d-flex align-items-center"><a id="search" href="#"><i
+                                        class="icon-search"></i></a>
+                            </li>
+                            
+                            <!-- Logout    -->
+                            <li class="nav-item">
+                                <a href="login.html" class="nav-link logout"> <span class="d-none d-sm-inline">Logout</span><i class="fa fa-sign-out"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <div class="page-content d-flex align-items-stretch">
+            <!-- Side Navbar -->
+            <nav class="side-navbar">
+                <!-- Sidebar Header-->
+                <div class="sidebar-header d-flex align-items-center">
+                    <div class="avatar"><img id="userimage" alt="..." class="img-fluid rounded-circle"></div>
+                    <div class="title">
+                        <h1 id="username" class="h4"></h1>
+                        <p id ="classname"></p>
+                    </div>
+                </div>
+                <!-- Sidebar Navidation Menus--><span class="heading"></span>
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="index.html"> <i class="icon-home"></i>主界面 </a>
+                    </li>
+                    <li>
+                        <a href="tables.html"> <i class="icon-grid"></i>选课 </a>
+                    </li>
+                    <li>
+                        <a href="Discuss.html"> <i class="fa fa-bar-chart"></i>讨论区 </a>
+                    </li>
+                    <li class="active">
+                        <a href="forms.html"> <i class="icon-padnote"></i>发布页面 </a>
+                    </li>
+                    <li>
+                        <a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>功能 </a>
+                        <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
+                            <li><a href="curriculum.html">课程表</a></li>
+                             
+                            <li><a href="activity.html">活动通知</a></li>
+							<li><a href="competition.html">比赛通知</a></li>
+                            <li><a href="test.html">考试信息</a></li>
+                            <li><a href="serchgrade.html">成绩查询</a></li>
+                             
+							
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="login.html"> <i class="icon-interface-windows"></i>Login page </a>
+                    </li>
+                </ul>
+
+            </nav>
+            <div class="content-inner">
+                <!-- Page Header-->
+                <header class="page-header">
+                    <div class="container-fluid">
+                        <h2 class="no-margin-bottom">发布页面</h2>
+                    </div>
+                </header>
+                <!-- Breadcrumb-->
+                <div class="breadcrumb-holder container-fluid">
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">主页面</a></li>
+                        <li class="breadcrumb-item active">发布页面 </li>
+                    </ul>
+                </div>
+                <script src="js/jquery-3.4.1.min.js"></script>
+                <script type="text/javascript">
+                    function sub() {
+                        var str = {
+                            "name": document.getElementById("name").value,
+                            "info": document.getElementById("info").value,
+                            "address": document.getElementById("hostadd").value,
+                            "organizer": document.getElementById("hoster").value,
+                            "time": document.getElementById("hosttime").value
+                        }
+						var value = document.getElementById("option").value;
+                        if (value == 0)
+						{
+                            $.ajax({
+                                url: 'http://49.235.169.238:8000/api/postcom',
+                                type: 'POST',
+                                dataType: 'JSON',
+                                contentType: "application/json",
+                                data: JSON.stringify(str),
+                                success: function(data) {
+									alert(data.msg);
+                                    //data就是后台返回的值
+                                },
+                                error: function(data) {
+
+                                    alert(data.msg);
+                                }
+                            });
+						}
+                        else if (value == 1)
+						{
+                            $.ajax({
+                                url: 'http://49.235.169.238:8000/api/postact',
+                                type: 'POST',
+                                dataType: 'JSON',
+                                contentType: "application/json",
+                                data: JSON.stringify(str),
+                                success: function(data) {
+									alert(data.msg);
+	
+                                    //data就是后台返回的值
+                                },
+                                error: function(data) {
+
+                                    alert(data.msg);
+                                }
+                            });
+						}
+                        else{
+                            $.ajax({
+                                url: 'http://49.235.169.238:8000/api/postexam',
+                                type: 'POST',
+                                dataType: 'JSON',
+                                contentType: "application/json",
+                                data: JSON.stringify(str),
+                                success: function(data) {
+									alert(data.msg);
+                                    //data就是后台返回的值
+                                },
+                                error: function(data) {
+
+                                    alert(data.msg);
+                                }
+                            });}
+                    }
+					function fileInput()
+					{
+						$.ajax({
+                                url: 'http://49.235.169.238:8000/api/fileInput',
+                                type: 'POST',
+                                dataType: 'JSON',
+                                contentType: "application/json",
+                                data: JSON.stringify(str),
+                                success: function(data) {
+
+                                    //data就是后台返回的值
+                                },
+                                error: function() {
+
+                                    alert(data.msg);
+                                }
+                            });
+					};
+                </script>
+                <!-- Forms Section-->
+                <section class="forms">
+                    <div class="container-fluid">
+                        <div class="row">
+
+                            <!-- Form Elements -->
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-close">
+                                        <div class="dropdown">
+                                            <button type="button" id="closeCard5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i
+                                                    class="fa fa-ellipsis-v"></i></button>
+                                            <div aria-labelledby="closeCard5" class="dropdown-menu dropdown-menu-right has-shadow">
+                                                <a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a>
+                                                <a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-header d-flex align-items-center">
+                                        <h3 class="h4">添加活动</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <form class="form-horizontal">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 form-control-label">活动名称</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="name">
+                                                </div>
+                                            </div>
+                                            <div class="line"></div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 form-control-label">活动简介</label>
+                                                <div class="col-sm-9">
+													<textarea class="form-control" rows="3"  id="info" ></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="line"></div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 form-control-label">举办方</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="hoster">
+                                                </div>
+                                            </div>
+                                            <div class="line"></div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 form-control-label">举办地点</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="hostadd">
+                                                </div>
+                                            </div>
+                                            <div class="line"></div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 form-control-label">举办时间</label>
+                                                <div class="col-sm-9">
+                                                    <input type="date" class="form-control" id="hosttime" >
+                                                </div>
+                                            </div>
+                                            <div class="line"></div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 form-control-label">活动类型</label>
+                                                <div class="col-sm-9">
+                                                    <select name="account" class="form-control mb-3" id="option">
+                                                        <option value="0">比赛</option>
+                                                        <option value="1">活动</option>
+                                                        <option value="2">考试</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="line"></div>
+                                            <div class="form-group row">
+                                                <label for="fileInput" class="col-sm-3 form-control-label">上传文件</label>
+                                                <div class="col-sm-9">
+                                                    <input id="fileInput" type="file" class="form-control-file " onclick = "fileinput()">
+                                                </div>
+                                            </div>
+                                            <div class="line"></div>
+                                            <div class="form-group row">
+                                                <div class="col-sm-4 offset-sm-3">
+                                                    <button type="button" class="btn btn-secondary">取消</button>
+                                                    <button type="button" class="btn btn-primary" onclick="sub();return false;" >发布</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+									<div class="alert alert-warning hid" role="alert">
+									   <button type="button" class="close" data-dismiss="alert" aria-label="Close">          
+										  <span aria-hidden="true">&times;</span>
+									   </button>
+									  <strong>请按规定格式发布!</strong> 
+									</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- Page Footer-->
+                <footer class="main-footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <p>Shandong University &copy; 2019</p>
+                            </div>
+                            <div class="col-sm-6 text-right">
+                                <p>Design by Liu Qianyi,Hei Nailei,Yang Jiyuan
+                                    <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+    <!-- JavaScript files-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/popper.js/umd/popper.min.js">
+    </script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="vendor/jquery.cookie/jquery.cookie.js">
+    </script>
+    <script src="vendor/chart.js/Chart.min.js"></script>
+    <script src="vendor/jquery-validation/jquery.validate.min.js"></script>
+    <!-- Main File-->
+    <script src="js/front.js"></script>
+</body>
+
+</html>
